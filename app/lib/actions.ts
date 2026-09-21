@@ -5,6 +5,11 @@ import { AuthError } from "next-auth";
 import bcrypt from "bcrypt";
 import postgres from "postgres";
 import { z } from "zod";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { Deck } from "./types";
+
+
 
 const sql = postgres(process.env.POSTGRES_URL!, {
     ssl: "require",
@@ -74,3 +79,38 @@ export async function createUser(
     }
 }
 
+export async function createDeck(formData: FormData) {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        throw new Error("Not authenticated");
+    }
+
+    const userId = session.user.id;
+
+    const name = formData.get("name") as string;
+
+    const cardIds = formData.getAll("cardIds") as string[];
+
+    const deck = await sql`
+        INSERT INTO decks (name, user_id)
+        VALUES (${name}, ${userId})
+        RETURNING id
+    `;
+
+    for (const cardId of cardIds) {
+        await sql`
+            INSERT INTO decks_dictionary (deck_id, dictionary_id)
+            VALUES (${deck[0].id}, ${Number(cardId)})
+        `;
+    }
+
+    redirect(`/flashcards/${deck[0].id}`);
+}
+
+export async function updateUserDeckStats(score:number){
+    const current= await sql`
+        SELECT 
+    `
+
+}

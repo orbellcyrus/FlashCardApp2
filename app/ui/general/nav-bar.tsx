@@ -3,16 +3,12 @@ import { House, User, Plus, RectangleVertical   } from "lucide-react";
 
 export default function NavBar(){
     return(
-        <nav className="flex flex-row justify-center gap-2 p-2 bg-gray-800 md:text-2xl text-xl w-screen">
-            <Link href={"/"} className="group flex flex-row items-center transition-all  md:hover:text-green-600 active:text-green-600">
-                Home
-                <House 
-                    size={25}
-                >
-                </House>
-            </Link> 
+        <div className="flex justify-center items-center">
 
-            <Link href={"/decks"} className="group flex flex-row items-center transition-all md:hover:text-green-600 active:text-green-600">
+        
+        <nav className=" sticky flex flex-row justify-center md:gap-12 gap-2 p-4 bg-black md:text-2xl text-l  z-100 rounded-full border-3 border-gray-400">
+    
+            <Link href={"/decks?page=1"} className="group flex flex-row items-center transition-all md:hover:text-green-600 active:text-green-600">
                 Decks
                 <RectangleVertical
                 size={25}
@@ -36,5 +32,6 @@ export default function NavBar(){
                 </User>
             </Link>
         </nav>
+        </div>
     );
 }

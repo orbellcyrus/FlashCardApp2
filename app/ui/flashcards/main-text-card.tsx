@@ -35,25 +35,22 @@ export default function MainTextCard({currentCard}:MainTextCardProps){
                 </div>
             </div>
 
-            <div className="group [perspective:1000px]" onClick={handleCardClick}>
+            <div className="[perspective:1000px]" onClick={handleCardClick}>
                 <div className={`relative h-80 w-56 transition-transform duration-500 [transform-style:preserve-3d] text-slate-700 text-3xl `}>
 
                     {/* english */}
-                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-blue-200 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d] ${side!=0 && "[transform:rotateY(-180deg)]"}`}>
-                        {//currentCard.english
-                        }
+                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-blue-200 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d ${side!=0 && "[transform:rotateY(-180deg)]"}`}>
+                        {currentCard.english}
                     </div>
 
                     {/* pron */}
-                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-orange-300 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d]  ${side!=1 && "[transform:rotateY(-180deg)]"}`}>
-                        {//currentCard.pronunciation
-                        }
+                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-orange-300 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d  ${side!=1 && "[transform:rotateY(-180deg)]"}`}>
+                        {currentCard.pronunciation }
                     </div>
 
                     {/* chinese */}
-                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-purple-300 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d] ${side!=2 && "[transform:rotateY(-180deg)]"}`}>
-                        {//currentCard.chinese_character
-                        }
+                    <div className={`absolute inset-0 flex items-center justify-center rounded-xl bg-purple-300 [backface-visibility:hidden] transition-transform duration-500 transform-style:preserve-3d ${side!=2 && "[transform:rotateY(-180deg)]"}`}>
+                        {currentCard.chinese_characters}
                     </div>
                 </div>
             </div>
