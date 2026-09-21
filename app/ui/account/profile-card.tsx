@@ -1,5 +1,13 @@
 import { User } from "lucide-react";
-export default function ProfileCard(){
+import { auth } from "@/auth";
+
+export default async function ProfileCard(){
+    const session = await auth();
+
+    if (!session) {
+        throw new Error("Unauthorized");
+    }
+
     return(
         <div className="w-fit flex-col rounded-xl p-2 bg-gray-800 text-slate-100 font-sans">
             <div className="flex flex-row justify-center items-center text-xl">
@@ -9,7 +17,15 @@ export default function ProfileCard(){
                 >                    
                 </User>
                 <p>
-                    Username
+                     Welcome, {session.user.name}
+                </p>
+
+                <p>
+                    Email: {session.user.email}
+                </p>
+
+                <p>
+                    User ID: {session.user.id}
                 </p>
             </div>
             <div>
@@ -19,7 +35,9 @@ export default function ProfileCard(){
                     <li>Stat3</li>
                 </ul>
             </div>
+
             
+         
         </div>
     );
 }
