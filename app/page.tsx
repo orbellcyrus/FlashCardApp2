@@ -1,11 +1,5 @@
-import MainTextCard from "./ui/flashcards/main-text-card";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="flex flex-row justify-center">
-      
-    </div>
-    
-      
-  );
+  redirect("/account");
 }
