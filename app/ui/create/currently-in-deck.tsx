@@ -19,7 +19,7 @@ export default function CurrentlyInDeck({cards,onCardRemoved}:{cards:Card[],onCa
                        
                            {cards.map((card) => (
                                <li>
-                                   <label key={card.id} className="flex m-3 gap-3 bg-gray-900 rounded-xl p-1">
+                                   <label key={card.id} className="flex m-3 gap-3 bg-gray-900 rounded-xl p-1 cursor-pointer" >
                                        <input
                                             
                                            type="hidden"

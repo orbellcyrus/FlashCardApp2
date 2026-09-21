@@ -10,7 +10,7 @@ export default async function ProfileCard(){
 
     return(
         <div className="w-fit flex-col rounded-xl p-2 border-2 border-white text-slate-100 font-sans ">
-            <div className="flex flex-row justify-center items-center text-xl">
+            <div className="flex flex-row justify-center items-center text-xl gap-4">
                 <User
                     color="white"
                     size={64}
@@ -20,9 +20,15 @@ export default async function ProfileCard(){
                     {session.user.name}
                 </p>
 
-                <p>
-                    Email: {session.user.email}
-                </p>
+                <div className=" flex flex-row">
+                    <p>
+                        Email: 
+                    </p>
+                    <p className="blur hover:blur-none transition-all flex flex-row">
+                        {session.user.email}
+                    </p>
+                    
+                </div>
             </div>
            
 

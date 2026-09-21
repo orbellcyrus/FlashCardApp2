@@ -24,7 +24,7 @@ export default function MainTextCard({currentCard}:MainTextCardProps){
                 
                 <div className={`transition-color duration-200 rounded-full p-1 text-m border-2 border-slate-500 ${side === 1 ? "bg-orange-300 text-slate-800" : "bg-gray-200 text-slate-500"} hover:scale-110`}>
                     <button onClick={()=>setSide(1)}>
-                        Tone
+                        Pronunciation 
                     </button>
                 </div>
                 

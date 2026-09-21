@@ -5,8 +5,8 @@ type GameInformationProps = {
 }
 export default function GameInformation({index,score,totalCards}:GameInformationProps){
     return(
-        <div className="flex flex-col bg-gray-800 border-2 border-white rounded-xl mb-2">
-            <div className="flex flex-row justify-evenly">
+        <div className="border-2 border-white rounded-xl p-2">
+            <div className="flex flex-row justify-evenly gap-2">
                 <p>Score:{score}</p>
                 <p>Postion:{index}/{totalCards}</p>
             </div>

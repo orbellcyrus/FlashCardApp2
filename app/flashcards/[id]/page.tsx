@@ -13,7 +13,7 @@ export default async function FlashCardsPage({
 
     return (
         <main className="flex flex-col items-center justify-center">
-            <FlashCardController data={words} />
+            <FlashCardController data={words} deckId={Number(id)} />
         </main>
     );
 }

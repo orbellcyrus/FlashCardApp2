@@ -45,6 +45,11 @@ export async function createUser(
     prevState: string | undefined,
     formData: FormData
 ) {
+    const redirectTo =
+        typeof formData.get("redirectTo") === "string"
+            ? (formData.get("redirectTo") as string)
+            : "/";
+
     const parsed = signupSchema.safeParse({
         username: formData.get("username"),
         email: formData.get("email"),
@@ -72,10 +77,24 @@ export async function createUser(
                 ${passwordHash}
             )
         `;
+    } catch (error) {
+        return "Unable to create account.";
+    }
+
+    try {
+        await signIn("credentials", {
+            email,
+            password,
+            redirectTo,
+        });
 
         return undefined;
     } catch (error) {
-        return "Unable to create account.";
+        if (error instanceof AuthError) {
+            return "Unable to sign you in automatically. Please log in.";
+        }
+
+        throw error;
     }
 }
 
@@ -108,9 +127,68 @@ export async function createDeck(formData: FormData) {
     redirect(`/flashcards/${deck[0].id}`);
 }
 
-export async function updateUserDeckStats(score:number){
-    const current= await sql`
-        SELECT 
-    `
 
+export async function updateUserDeckStats(score: number, id: number) {
+    await sql`
+        UPDATE decks
+        SET
+            high_score = GREATEST(COALESCE(high_score, 0), ${score}),
+            last_score = ${score},
+            last_played = CURRENT_TIMESTAMP
+        WHERE id = ${id};
+    `;
+}
+
+export async function deleteDeck(deckId:number) {
+    await sql`
+        DELETE FROM decks
+        WHERE id = ${deckId};
+    `
+    redirect('/decks');
+    
+}
+
+export async function editDeck(deckId: number, formData: FormData) {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        throw new Error("Not authenticated");
+    }
+
+    const name = String(formData.get("name") ?? "").trim();
+    const cardIds = formData.getAll("cardIds").map((value) => Number(value)).filter((value) => !Number.isNaN(value));
+
+    if (!name) {
+        throw new Error("Deck name is required");
+    }
+
+    const deckOwnership = await sql<{ id: number }[]>`
+        SELECT id
+        FROM decks
+        WHERE id = ${deckId} AND user_id = ${session.user.id}
+    `;
+
+    if (!deckOwnership.length) {
+        throw new Error("You do not own this deck");
+    }
+
+    await sql`
+        UPDATE decks
+        SET name = ${name}
+        WHERE id = ${deckId}
+    `;
+
+    await sql`
+        DELETE FROM decks_dictionary
+        WHERE deck_id = ${deckId}
+    `;
+
+    for (const cardId of cardIds) {
+        await sql`
+            INSERT INTO decks_dictionary (deck_id, dictionary_id)
+            VALUES (${deckId}, ${cardId})
+        `;
+    }
+
+    redirect("/decks");
 }

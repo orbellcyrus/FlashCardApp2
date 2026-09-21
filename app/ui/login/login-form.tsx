@@ -11,33 +11,40 @@ export default function LoginForm() {
         useActionState(authenticate, undefined);
 
     return (
-        <div className="bg-white text-black p-2">
-            <form action={formAction}>
-                <input
-                    className="border-2 border-black"
-                    type="email"
-                    name="email"
-                    required
-                />
+        <div className="bg-white text-black p-4 rounded-xl">
+            <form action={formAction} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="email" className="font-medium">Email</label>
+                    <input
+                        id="email"
+                        className="border-2 border-black rounded px-2 py-1"
+                        type="email"
+                        name="email"
+                        required
+                    />
+                </div>
 
-                <input
-                    className="border-2 border-black"
-                    type="password"
-                    name="password"
-                    required
-                    minLength={6}
-                />
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="password" className="font-medium">Password</label>
+                    <input
+                        id="password"
+                        className="border-2 border-black rounded px-2 py-1"
+                        type="password"
+                        name="password"
+                        required
+                        minLength={6}
+                    />
+                </div>
+
                 <input type="hidden" name="redirectTo" value={callbackUrl} />
-                <button disabled={isPending}>
+                <button disabled={isPending} className="rounded bg-black text-white px-3 py-2">
                     Log In
                 </button>
 
                 {errorMessage && (
-                    <p>{errorMessage}</p>
+                    <p className="text-red-600">{errorMessage}</p>
                 )}
-            </form> 
-
+            </form>
         </div>
-        
     );
 }

@@ -8,31 +8,50 @@ import GameOverPopUp from "./gameover-popup";
 import { updateUserDeckStats } from "@/app/lib/actions";
 
 
-export default function FlashCardController({data}:{data:Card[]}){
+export default function FlashCardController({data,deckId}:{data:Card[],deckId:number}){
     console.log(data);
     const [index,setIndex] = useState(0);
     const [history,setHistory] = useState<HistoryEntry[]>([]);
     const [score,setScore] = useState(0);
     const [gameIsOver,setGameIsOver] = useState(false);
+    const [modifiedData , setModifiedData] = useState([]);
+
     
     const handleCorrectClicked = () =>{
-        if(index < data.length-1){
-            setHistory(prev => [...prev,{id:data[index].id,known:true}])
-            setIndex(index+1);
-            setScore(score+1);
-            console.log(history);
-        }else{
-            handleGameOver();
+        const currentCard = data[index];
+        const nextHistory = [...history, { id: currentCard.id, known: true }];
+        const nextScore = score + 1;
+        
+
+        if (index < data.length - 1) {
+            setHistory(nextHistory);
+            setIndex(index + 1);
+            setScore(nextScore);
+            skipKnown();
+            return;
         }
+
+        setHistory(nextHistory);
+        setScore(nextScore);
+        handleGameOver(nextScore);
     }
 
     const handleWrongClicked = () =>{
-        if(index < data.length-1){
-            setHistory(prev => [...prev,{id:data[index].id,known:false}]);
-            setIndex(index+1);
-        }else{
-            handleGameOver();
+        const currentCard = data[index];
+        const nextHistory = [...history, { id: currentCard.id, known: false }];
+
+        if (index < data.length - 1) {
+            setHistory(nextHistory);
+            if(history[index+1].known===true){
+            skipKnown();
+
+            }
+            setIndex(index + 1);
+            return;
         }
+
+        setHistory(nextHistory);
+        handleGameOver(score);
     }
 
     const handleUndoClicked = () =>{
@@ -47,11 +66,14 @@ export default function FlashCardController({data}:{data:Card[]}){
         
     }
     function handleRestartClicked(){
+        setHistory(prev => prev.filter(historyEntry => historyEntry.known == true));
+        skipKnown();
         setIndex(0);
-        setHistory([]);
         setGameIsOver(false);
         setScore(0);
     }
+
+
     function handleFullRestartClicked(){
         setIndex(0);
         setHistory([]);
@@ -59,9 +81,15 @@ export default function FlashCardController({data}:{data:Card[]}){
         setScore(0);
     }
 
-    function handleGameOver(){
-        updateUserDeckStats(score);
+    function handleGameOver(finalScore = score){
+        updateUserDeckStats(finalScore, deckId);
         setGameIsOver(true);
+    }
+
+    function skipKnown(){
+        while(history[index].known==true){
+            setIndex(index+1);
+        }
     }
     
     
@@ -71,18 +99,22 @@ export default function FlashCardController({data}:{data:Card[]}){
             { 
                 gameIsOver && <GameOverPopUp handleRestartClicked={handleRestartClicked} handleFullRestartClicked={handleFullRestartClicked} ></GameOverPopUp>
             }
-            <GameInformation
+            <div className="mt-2">
+                <GameInformation
                 index = {index}
                 totalCards={data.length}
                 score={score}
-            ></GameInformation>
-
-            <GameHistory currentHistory={history} allCards={data}>
-
-            </GameHistory>
-            <GameButtons handleRightClicked={handleCorrectClicked} handleWrongClicked={handleWrongClicked} handleUndoClicked={handleUndoClicked} currentCard={data[index]}></GameButtons>
+                ></GameInformation>
+            </div>
+            <div className="mt-2">
+                <GameHistory currentHistory={history} allCards={data}></GameHistory>
+            </div>
+            <div className="mt-4">
+                <GameButtons handleRightClicked={handleCorrectClicked} handleWrongClicked={handleWrongClicked} handleUndoClicked={handleUndoClicked} currentCard={data[index]}></GameButtons>
+            </div>   
         </>
     )
 
 
 }
+

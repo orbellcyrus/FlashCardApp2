@@ -25,7 +25,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
+        <div className="mt-2">
           <NavBar></NavBar>
+        </div>
+          
         {children}
       </body>
     </html>

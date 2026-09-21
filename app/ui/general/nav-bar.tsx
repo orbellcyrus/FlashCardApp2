@@ -8,7 +8,7 @@ export default function NavBar(){
         
         <nav className=" sticky flex flex-row justify-center md:gap-12 gap-2 p-4 bg-black md:text-2xl text-l  z-100 rounded-full border-3 border-gray-400">
     
-            <Link href={"/decks?page=1"} className="group flex flex-row items-center transition-all md:hover:text-green-600 active:text-green-600">
+            <Link href={"/decks"} className="group flex flex-row items-center transition-all md:hover:text-green-600 active:text-green-600">
                 Decks
                 <RectangleVertical
                 size={25}

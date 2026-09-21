@@ -49,11 +49,11 @@ export default function AllCharacters({
             />
             <ul>
                 {filteredCards.map((card) => (
-                    <li key={card.id} className="flex m-3 gap-3 group bg-gray-900 rounded-xl p-1" onClick={() => onCardAdded(card)}>
+                    <li key={card.id} className="flex m-3 gap-3 group bg-gray-900 rounded-xl p-1 [&*>]cursor-pointer" onClick={() => onCardAdded(card)}>
                         <span>{card.chinese_characters}</span>
                         <span>{card.pronunciation}</span>
                         <span>{card.english}</span>
-                        <p  className="group-hover:text-green-500 flex flex-f">
+                        <p  className="group-hover:text-green-500 flex flex-f cursor-pointer">
                             Add Card
                             
                         </p>

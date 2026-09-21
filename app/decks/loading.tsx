@@ -1,11 +1,11 @@
 import { getUserDecks } from "../lib/data";
 import DeckHolder from "../ui/decks/deck-holder";
 
-export default async function DecksPage(){
-    const decks = await getUserDecks();
+export default function DecksPageLoading(){
+   
     return(
         <main className="flex flex-col justify-center items-center w-full ">
-            <DeckHolder decks ={decks} ></DeckHolder>
+            <p> loading decks</p>
         </main>
     );
 }

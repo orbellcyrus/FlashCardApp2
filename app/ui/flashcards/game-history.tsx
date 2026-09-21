@@ -1,6 +1,8 @@
-import { Triangle } from "lucide-react";
-import { Card,HistoryEntry } from "@/app/lib/types";
 
+"use client"
+import { Card,HistoryEntry } from "@/app/lib/types";
+import { useState } from "react";
+type side = "english" | "chinese_character" | "pronunciation";
 
 
 type GameHistoryProps = {
@@ -9,17 +11,22 @@ type GameHistoryProps = {
 }
 export default function GameHistory({currentHistory,allCards}:GameHistoryProps){
     const remainingCards = allCards.slice(currentHistory.length);
+    const [side,setSide] = useState<side>("english")
+    function changeSide(){
+        if (side == "english") setSide("pronunciation");
+        if (side == "pronunciation") setSide("chinese_character");
+        if(side == "chinese_character") setSide("english")
+    }
     return(
-        <div className="mb-2 flex flex-row items-center justify-between p-2 rounded-xl ">
-            <button>
-                <Triangle className="-rotate-90 hover:fill-white" > </Triangle>
-            </button>
-
+        <div className="flex flex-row items-center justify-between p-2 rounded-xl ">
+            
             <div className="flex flex-row justify-center items-center gap-2">
                 {
                     currentHistory.map((card)=>(
-                            <div className={`rounded-xl p-1 hover:transform-1 text-slate-900 ${card.known ? "bg-green-300" : "bg-red-400" }`}  key={card.id}>
-                                {allCards.find(c => c.id === card.id)?.english}                               
+                            <div className={`rounded-xl p-1 hover:transform-1 text-slate-900 ${card.known ? "bg-green-300" : "bg-red-400" }`} onClick={changeSide} key={card.id}>
+                                {side == "english" && allCards.find(c => c.id === card.id)?.english}
+                                {side == "chinese_character" && allCards.find(c => c.id === card.id)?.chinese_characters}   
+                                {side == "pronunciation" && allCards.find(c => c.id === card.id)?.pronunciation}                                  
                             </div>
                     ))
                 }
@@ -30,18 +37,12 @@ export default function GameHistory({currentHistory,allCards}:GameHistoryProps){
                     </div>
                 )
 
-
                 )
                 
                 }
 
             </div>
             
-
-            <button>
-                <Triangle
-                    className="rotate-90 hover:fill-white" ></Triangle>
-            </button>
 
         </div>
     )

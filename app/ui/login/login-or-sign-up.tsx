@@ -9,10 +9,11 @@ export default function LoginOrSignUp(){
         setCurrentForm( currentForm === "login" ? "signUp" : "login");
     }
     return(
-        <div>
+        <div className=" flex flex-col items-center">
             
-            <button onClick={handleSwapForms}>
-                Sign In or Login instead
+            <button onClick={handleSwapForms} className="bg-white text-black rounded-xl p-2 ">
+               {currentForm == "login" && "Sign Up Instead"}
+               {currentForm == "signUp" && "Log In Instead"}
             </button>
 
             {currentForm === "login" && 
